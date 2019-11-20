@@ -1,5 +1,5 @@
 Header header
-uint32 image_seq
+time image_stamp
 uint32 x1
 uint32 y1
 uint32 x2
