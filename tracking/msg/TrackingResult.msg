@@ -1,5 +1,4 @@
 Header header
-time image_stamp
 uint32 x1
 uint32 y1
 uint32 x2

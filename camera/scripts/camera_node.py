@@ -29,25 +29,24 @@ def camImagePub():
         front_cap = cv2.VideoCapture(cam_cfg['FRONT_CAM']['NUMBER'])
         front_cap.set(cv2.CAP_PROP_FRAME_WIDTH, cam_cfg['FRONT_CAM']['WIDTH'])
         front_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_cfg['FRONT_CAM']['HEIGHT'])
-        # front_cap.set(cv2.CAP_PROP_FPS, cam_cfg['PUB_RATE'])
         front_pub = rospy.Publisher('camera/front', Image, queue_size=cam_cfg['QUEUE_SIZE'])
-        front_cmprs_pub = rospy.Publisher('camera/front/compress', CompressedImage, queue_size=cam_cfg['QUEUE_SIZE'])
+        front_cmprs_pub = rospy.Publisher('camera/front/compressed', CompressedImage, queue_size=cam_cfg['QUEUE_SIZE'])
         assert front_cap.isOpened(), 'Front camera is not available!'
         
     if cam_cfg['LEFT_CAM']['USED']:
         left_cap = cv2.VideoCapture(cam_cfg['LEFT_CAM']['NUMBER'])
         left_cap.set(cv2.CAP_PROP_FRAME_WIDTH, cam_cfg['LEFT_CAM']['WIDTH'])
         left_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_cfg['LEFT_CAM']['HEIGHT'])
-        # left_cap.set(cv2.CAP_PROP_FPS, cam_cfg['PUB_RATE'])
         left_pub = rospy.Publisher('camera/left', Image, queue_size=cam_cfg['QUEUE_SIZE'])
+        left_cmprs_pub = rospy.Publisher('camera/left/compressed', CompressedImage, queue_size=cam_cfg['QUEUE_SIZE'])        
         assert left_cap.isOpened(), 'Left camera is not available!'
 
     if cam_cfg['RIGHT_CAM']['USED']:
         right_cap = cv2.VideoCapture(cam_cfg['RIGHT_CAM']['NUMBER'])
         right_cap.set(cv2.CAP_PROP_FRAME_WIDTH, cam_cfg['RIGHT_CAM']['WIDTH'])
         right_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, cam_cfg['RIGHT_CAM']['HEIGHT'])
-        # right_cap.set(cv2.CAP_PROP_FPS, cam_cfg['PUB_RATE'])        
         right_pub = rospy.Publisher('camera/right', Image, queue_size=cam_cfg['QUEUE_SIZE'])
+        right_cmprs_pub = rospy.Publisher('camera/right/compressed', CompressedImage, queue_size=cam_cfg['QUEUE_SIZE'])
         assert right_cap.isOpened(), 'Right camera is not available!'
 
     # the 'CVBridge' is a python_class, must have a instance.
@@ -65,22 +64,29 @@ def camImagePub():
             cmprs_msg = bridge.cv2_to_compressed_imgmsg(frame, dst_format='jpg')
             cmprs_msg.header.stamp = rospy.get_rostime()
             front_cmprs_pub.publish(cmprs_msg)
-            # cv2.imshow('front', frame)  
-    
+     
         if cam_cfg['LEFT_CAM']['USED']:
             _, frame = left_cap.read()
+     
             msg = bridge.cv2_to_imgmsg(frame, encoding="bgr8")
             msg.header.stamp = rospy.get_rostime()
             left_pub.publish(msg)
-            # cv2.imshow('left', frame)
-        
+            
+            cmprs_msg = bridge.cv2_to_compressed_imgmsg(frame, dst_format='jpg')
+            cmprs_msg.header.stamp = rospy.get_rostime()
+            left_cmprs_pub.publish(cmprs_msg)
+             
         if cam_cfg['RIGHT_CAM']['USED']:
             _, frame = right_cap.read()
+            
             msg = bridge.cv2_to_imgmsg(frame, encoding="bgr8")
             msg.header.stamp = rospy.get_rostime()            
             right_pub.publish(msg)
-            # cv2.imshow('right', frame)
-        
+
+            cmprs_msg = bridge.cv2_to_compressed_imgmsg(frame, dst_format='jpg')
+            cmprs_msg.header.stamp = rospy.get_rostime()
+            right_cmprs_pub.publish(cmprs_msg)
+             
         rate.sleep()
  
 if __name__ == '__main__':
