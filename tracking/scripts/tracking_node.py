@@ -22,8 +22,8 @@ def callback(data):
   
     if not detect_human:
         human = yolo.detect_human(img)
-        cv2.imshow('detecting', img)
-        cv2.waitKey(1)
+        # cv2.imshow('detecting', img)
+        # cv2.waitKey(1)
         if len(human) > 0:
             detect_human = True
             init_box = [human[0], human[1], human[2]-human[0], human[3]-human[1]]
@@ -33,9 +33,9 @@ def callback(data):
         state = SiamRPN_track(state, img)  # track
         res = cxy_wh_2_rect(state['target_pos'], state['target_sz'])
         res = [int(l) for l in res]
-        cv2.rectangle(img, (res[0], res[1]), (res[0] + res[2], res[1] + res[3]), (0, 255, 255), 3)
-        cv2.imshow('SiamRPN', img)
-        cv2.waitKey(1)
+        # cv2.rectangle(img, (res[0], res[1]), (res[0] + res[2], res[1] + res[3]), (0, 255, 255), 3)
+        # cv2.imshow('SiamRPN', img)
+        # cv2.waitKey(1)
 
         tracking_result = TrackingResult()
         tracking_result.x1 = res[0]
