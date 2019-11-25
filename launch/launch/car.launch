@@ -1,4 +1,4 @@
 <launch>
     <node pkg="camera" name="camera_node" type="camera_node.py"/>
-    <node pkg="tracking" name="tracking_node" type="tracking_node.py"/>
+    <!-- <node pkg="tracking" name="tracking_node" type="tracking_node.py"/> -->
 </launch>

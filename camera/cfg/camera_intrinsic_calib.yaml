@@ -17,6 +17,5 @@ CRITERIA:
     MAX_ITER: 40 
 # The number of images.
 IMAGE_NUMBER: 20
-# The index of camera for cv2.VideoCapture().
-CAMERA_INDEX: 0
+
 
