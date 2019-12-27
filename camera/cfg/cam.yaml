@@ -19,7 +19,7 @@ RIGHT_CAM:
     HEIGHT: 240
     USED: true
 
-PUB_RATE: 5
+PUB_RATE: 10
 
 QUEUE_SIZE: 2
 
